@@ -29,6 +29,13 @@ public class WrappedUserApiService implements UserApiService {
 
     private final UserApiService service;
 
+    public static UserApiService wrap(UserApiService service) {
+	if (service instanceof WrappedUserApiService) {
+	    return service;
+	}
+	return new WrappedUserApiService(service);
+    }
+
     public WrappedUserApiService(UserApiService service) {
 	this.service = service;
     }

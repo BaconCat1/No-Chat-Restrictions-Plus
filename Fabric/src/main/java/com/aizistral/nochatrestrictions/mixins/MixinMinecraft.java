@@ -21,9 +21,17 @@ public class MixinMinecraft {
 	    CallbackInfoReturnable<UserApiService> info) {
 	UserApiService returnedService = info.getReturnValue();
 	assert returnedService != null;
-	info.setReturnValue(new WrappedUserApiService(returnedService));
+	info.setReturnValue(WrappedUserApiService.wrap(returnedService));
 
-	NCRCore.LOGGER.info("Successfully supplanted UserApiService with a wrapped version.");
+	NCRCore.LOGGER.info("Successfully got mojang THE FUCK OUT :/");
+    }
+
+    @Inject(method = { "m_193584_", "getUserApiService" }, at = @At("RETURN"), cancellable = true, require = 0)
+    public void onGetUserApiService(CallbackInfoReturnable<UserApiService> info) {
+	UserApiService returnedService = info.getReturnValue();
+	if (returnedService != null) {
+	    info.setReturnValue(WrappedUserApiService.wrap(returnedService));
+	}
     }
 
     @Inject(method = { "m_294837_", "isNameBanned" }, at = @At("HEAD"), cancellable = true)
